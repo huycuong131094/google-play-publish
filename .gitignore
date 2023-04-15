@@ -1,3 +1,4 @@
 *.aab
 *.json
 releasenote.txt
+__pycache__
