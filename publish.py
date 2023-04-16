@@ -3,6 +3,8 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import argparse
 from utils import read_release_note
+import mimetypes
+mimetypes.add_type('application/octet-stream', '.aab')
 
 parser = argparse.ArgumentParser(description='Google Play Publishing Script')
 
@@ -112,15 +114,18 @@ def discard_edit(edit_id, package_name):
 
 def performingReleaseProcess(edit_id, package_name, release_notes, bundle_path, track, release_status):
     try:
+        print(f'Uploading {bundle_path} for edit {edit_id}')
         upload_response = upload_bundle(edit_id, package_name, bundle_path)
         print('Upload bundle successfully')
 
         version_code = upload_response['versionCode']
         print(f'Bundle version code {version_code}')
 
+        print('Starting to update edit with release notes')
         update_track_with_release_notes(edit_id, package_name, track,  version_code, release_notes, release_status)
         print('Update track successfully')
 
+        print('Starting to commit the changes')
         commit_changes(edit_id, package_name)
         print('Commit changes successfully')
     except HttpError as error:
