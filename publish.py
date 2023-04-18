@@ -8,12 +8,32 @@ mimetypes.add_type('application/octet-stream', '.aab')
 
 parser = argparse.ArgumentParser(description='Google Play Publishing Script')
 
+class ConfirmCompletedAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if values == 'completed':
+            if hasattr(namespace, 'yes') and namespace.yes:
+                setattr(namespace, self.dest, values)
+            else:
+                confirm = input("Are you sure you want to set release status to 'completed'? (y/n): ")
+                if confirm.lower() == 'y':
+                    setattr(namespace, self.dest, values)
+                else:
+                    setattr(namespace, self.dest, 'draft')
+        else:
+            setattr(namespace, self.dest, values)
+
 parser.add_argument('-s', '--service-account-path', type=str, help='Service account path', required=True)
 parser.add_argument('-t', '--track', type=str, help='Release track', required=True)
 parser.add_argument('-p', '--package-name', type=str, help='Package name', required=True)
 parser.add_argument('-b', '--bundle-path', type=str, help='Bundle path to upload', required=True)
 parser.add_argument('-r', '--release-note-path', type=str, help='Release note path', required=True)
-parser.add_argument('--release-status', choices=['draft', 'completed'], help='Set release status. Default is draft', default='draft')
+parser.add_argument('--release-status', 
+                    choices=['draft', 'completed'], 
+                    help='Set release status. Default is draft',
+                    default='draft', 
+                    action=ConfirmCompletedAction
+                    )
+parser.add_argument('-y', '--yes', dest='yes', action='store_true', help='Bypass confirmation for setting release status to "completed"')
 
 args = parser.parse_args()
 
