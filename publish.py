@@ -131,9 +131,10 @@ def performingReleaseProcess(edit_id, package_name, release_notes, bundle_path, 
     except HttpError as error:
         print(f'An error occurred: {error}')
         raise
-    finally:
+    except:
         discard_edit(edit_id, package_name)
         print(f'Successfully discard edit {edit_id}')
+        raise
 
 try:
     release_notes=read_release_note(release_note_path)
