@@ -149,7 +149,9 @@ def performingReleaseProcess(edit_id, package_name, release_notes, bundle_path, 
         commit_changes(edit_id, package_name)
         print('Commit changes successfully')
     except HttpError as error:
-        print(f'An error occurred: {error}')
+        print(f'An error occurred while performing release process: {error}')
+        discard_edit(edit_id, package_name)
+        print(f'Successfully discard edit {edit_id}')
         raise
     except:
         discard_edit(edit_id, package_name)
@@ -176,3 +178,4 @@ try:
 
 except HttpError as error:
     print(f'An error occurred: {error}')
+    exit(1)
