@@ -15,7 +15,7 @@ You also need to set up a Google Cloud project with the following APIs enabled:
 To use this script, you need to run it from the command line with the following arguments:
 
 ```bash
-python3 google_play_publishing.py \
+python3 publish.py \
   --service-account-path /path/to/service/account.json \
   --track alpha \
   --package-name com.example.app \
@@ -36,7 +36,7 @@ The script takes the following arguments:
 By default, the script sets the release status to `draft`. If you want to set the release status to `completed` without being prompted for confirmation, you can use the `-y` or `--yes` option:
 
 ```bash
-python3 google_play_publishing.py \
+python3 publish.py \
   --service-account-path /path/to/service/account.json \
   --track alpha \
   --package-name com.example.app \
@@ -51,7 +51,7 @@ python3 google_play_publishing.py \
 Here's an example command to publish an app bundle on the `alpha` release track:
 
 ```bash
-python3 google_play_publishing.py \
+python3 publish.py \
   --service-account-path /path/to/service/account.json \
   --track alpha \
   --package-name com.example.app \
